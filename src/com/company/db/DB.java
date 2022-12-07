@@ -33,7 +33,7 @@ public class DB {
     }
 
     private static Properties loadProperties() {
-        try (FileInputStream inputStream = new FileInputStream("src/com/company/db.properties")) {
+        try (FileInputStream inputStream = new FileInputStream("src/db.properties")) {
             Properties properties = new Properties();
             properties.load(inputStream); // Ler os dados do arquivo db.properties apontado pelo inputStream
             return properties;
