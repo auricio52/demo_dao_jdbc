@@ -10,7 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDao {
     private Connection connection;
@@ -65,6 +68,43 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public List<Seller> findAll() {
         return null;
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT seller.*, department.Name AS DepName " +
+                    "FROM seller INNER JOIN department " +
+                    "ON department.Id = seller.DepartmentId WHERE DepartmentId = ? ORDER BY Name");
+            preparedStatement.setInt(1, department.getId());
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<Seller> sellers = new ArrayList<>();
+            Map<Integer, Department> departmentMap = new HashMap<>();
+
+            while (resultSet.next()) {
+                int departmentId = resultSet.getInt("DepartmentId");
+                Department dep = departmentMap.get(departmentId);
+
+                if (dep == null) {
+                    dep = instantiateDepartment(resultSet);
+                    departmentMap.put(departmentId, dep);
+                }
+                Seller seller = instantiateSeller(resultSet, department);
+                sellers.add(seller);
+            }
+
+            return sellers;
+        } catch (SQLException exception) {
+            throw new DBException(exception.getMessage());
+        } finally {
+            DB.closeResultSet(resultSet);
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     private Seller instantiateSeller(ResultSet resultSet, Department department) throws SQLException {
