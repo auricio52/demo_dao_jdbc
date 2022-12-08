@@ -15,12 +15,22 @@ public class Main {
         System.out.println("--- TEST 1: find seller by id");
         Seller seller = sellerDao.findById(3);
         System.out.println(seller);
+        System.out.println();
 
-        System.out.println("--- TEST 2: find seller by department");
+        System.out.println("--- TEST 2: find sellers by department");
         Department department = new Department(2, null);
         List<Seller> sellers = sellerDao.findByDepartment(department);
         for (Seller seller1 : sellers) {
             System.out.println(seller1);
         }
+        System.out.println();
+
+        System.out.println("--- TEST 3: find all sellers");
+        sellers = sellerDao.findAll();
+        for (Seller seller1 : sellers) {
+            System.out.println(seller1);
+        }
+        System.out.println();
+
     }
 }
