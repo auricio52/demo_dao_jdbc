@@ -5,6 +5,7 @@ import com.company.entities.Department;
 import com.company.entities.Seller;
 import com.company.factories.DaoFactory;
 
+import java.util.Date;
 import java.util.List;
 
 public class Main {
@@ -32,5 +33,10 @@ public class Main {
         }
         System.out.println();
 
+        System.out.println("--- TEST 4: insert seller");
+        seller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.00, department);
+        sellerDao.insert(seller);
+        System.out.println("Inserted! New id = " + seller.getId());
+        System.out.println();
     }
 }
