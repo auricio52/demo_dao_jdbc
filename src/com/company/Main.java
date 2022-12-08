@@ -38,5 +38,12 @@ public class Main {
         sellerDao.insert(seller);
         System.out.println("Inserted! New id = " + seller.getId());
         System.out.println();
+
+        System.out.println("--- TEST 5: update seller");
+        seller.setName("Maria");
+        seller.setEmail("maria@gmail.com");
+        sellerDao.update(seller);
+        System.out.println("Updated! New id = " + seller.getId());
+        System.out.println();
     }
 }
